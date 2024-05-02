@@ -22,7 +22,13 @@ const CustomInput = ({
   return (
     <FormControl id={id} isInvalid={!!fieldError}>
       <FormLabel>{label}</FormLabel>
-      <InputField placeholder={`${label}`} type={inputType} {...register} />
+      <InputField
+        border={'none'}
+        boxShadow={'none'}
+        placeholder={`${label}`}
+        type={inputType}
+        {...register}
+      />
       <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   )

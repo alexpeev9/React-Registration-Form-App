@@ -17,6 +17,7 @@ import {
   formSchema,
   interestOptions
 } from '../../utils/formSchema'
+import CustomFileInput from '../CustomFileInput'
 
 const CustomForm = () => {
   const {
@@ -29,12 +30,11 @@ const CustomForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues
   })
-
   const onSubmit: SubmitHandler<FormValues> = (values) => {
     console.log(values)
     return new Promise((resolve) => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2))
+        alert('Great Success!')
         resolve(values)
       }, 3000)
     })
@@ -97,6 +97,15 @@ const CustomForm = () => {
           placeholder='Select some interests'
           options={interestOptions}
           useBasicStyles
+        />
+
+        {/* Avatar */}
+        <CustomFileInput
+          fieldError={errors.avatar}
+          label='Avatar'
+          id='avatar'
+          inputType='file'
+          register={register('avatar')}
         />
 
         {/* Reset and Submit Buttons */}
