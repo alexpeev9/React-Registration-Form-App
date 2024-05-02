@@ -1,5 +1,13 @@
 import { z } from 'zod'
 
+export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5mb
+export const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp'
+]
+
 const interestsSchema = z.object({
   label: z.string(),
   value: z.string()
@@ -18,7 +26,20 @@ export const formSchema = z
     interests: interestsSchema
       .array()
       .min(1, { message: 'Please pick an interest' })
-      .max(2, { message: 'Please pick maximum 2 interests' })
+      .max(2, { message: 'Please pick maximum 2 interests' }),
+    avatar: z
+      .instanceof(FileList, { message: 'Please upload an image' })
+      .refine(
+        (files) => files[0]?.size <= MAX_FILE_SIZE,
+        `Maximum file is up to 5mb`
+      )
+      .refine(
+        (files) => ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
+        'Please upload a valid image'
+      )
+      .transform((files) => {
+        return files.item(0)!
+      })
   })
   .refine(
     ({ password, passwordConfirmation }) => password === passwordConfirmation,
@@ -34,6 +55,7 @@ export const defaultValues: FormValues = {
   firstName: '',
   lastName: '',
   password: '',
+  avatar: new File([], ''),
   passwordConfirmation: '',
   interests: []
 }

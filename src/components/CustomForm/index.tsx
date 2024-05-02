@@ -1,11 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
-import {
-  ButtonGroup,
-  Container,
-  Heading,
-  Button,
-  Stack
-} from '@chakra-ui/react'
+import { Container, Heading, Button, Stack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import CustomSelect from '../CustomSelect'
@@ -17,31 +11,26 @@ import {
   formSchema,
   interestOptions
 } from '../../utils/formSchema'
+import CustomFileInput from '../CustomFileInput'
 
 const CustomForm = () => {
   const {
     control,
     handleSubmit,
     register,
-    reset,
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues
   })
-
   const onSubmit: SubmitHandler<FormValues> = (values) => {
     console.log(values)
     return new Promise((resolve) => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2))
+        alert('Great Success!')
         resolve(values)
       }, 3000)
     })
-  }
-
-  const handleReset = () => {
-    reset(defaultValues)
   }
 
   return (
@@ -99,25 +88,25 @@ const CustomForm = () => {
           useBasicStyles
         />
 
-        {/* Reset and Submit Buttons */}
-        <ButtonGroup>
-          <Button
-            type='button'
-            isLoading={isSubmitting}
-            onClick={handleReset}
-            w='full'
-          >
-            Reset
-          </Button>
-          <Button
-            type='submit'
-            isLoading={isSubmitting}
-            colorScheme='blue'
-            w='full'
-          >
-            Submit
-          </Button>
-        </ButtonGroup>
+        {/* Avatar */}
+        <CustomFileInput
+          fieldError={errors.avatar}
+          label='Avatar'
+          id='avatar'
+          inputType='file'
+          register={register('avatar')}
+        />
+
+        {/* Submit Button */}
+        <Button
+          type='submit'
+          isLoading={isSubmitting}
+          colorScheme='blue'
+          w='50%'
+          alignSelf={'center'}
+        >
+          Submit
+        </Button>
       </Stack>
     </Container>
   )
