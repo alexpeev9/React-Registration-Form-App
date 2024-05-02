@@ -1,11 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
-import {
-  ButtonGroup,
-  Container,
-  Heading,
-  Button,
-  Stack
-} from '@chakra-ui/react'
+import { Container, Heading, Button, Stack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import CustomSelect from '../CustomSelect'
@@ -24,7 +18,6 @@ const CustomForm = () => {
     control,
     handleSubmit,
     register,
-    reset,
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -38,10 +31,6 @@ const CustomForm = () => {
         resolve(values)
       }, 3000)
     })
-  }
-
-  const handleReset = () => {
-    reset(defaultValues)
   }
 
   return (
@@ -108,25 +97,16 @@ const CustomForm = () => {
           register={register('avatar')}
         />
 
-        {/* Reset and Submit Buttons */}
-        <ButtonGroup>
-          <Button
-            type='button'
-            isLoading={isSubmitting}
-            onClick={handleReset}
-            w='full'
-          >
-            Reset
-          </Button>
-          <Button
-            type='submit'
-            isLoading={isSubmitting}
-            colorScheme='blue'
-            w='full'
-          >
-            Submit
-          </Button>
-        </ButtonGroup>
+        {/* Submit Button */}
+        <Button
+          type='submit'
+          isLoading={isSubmitting}
+          colorScheme='blue'
+          w='50%'
+          alignSelf={'center'}
+        >
+          Submit
+        </Button>
       </Stack>
     </Container>
   )
