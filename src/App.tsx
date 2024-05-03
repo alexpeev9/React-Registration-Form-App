@@ -16,6 +16,7 @@ const App = () => {
   const {
     control,
     handleSubmit,
+    trigger,
     register,
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
@@ -33,64 +34,88 @@ const App = () => {
     })
   }
 
+  const steps = [
+    {
+      title: 'Information',
+      content: (
+        <>
+          {/* First Name */}
+          <CustomInput<FormValues>
+            fieldError={errors.firstName}
+            label='First Name'
+            id='firstName'
+            inputType='text'
+            register={register}
+          />
+          {/* Last Name */}
+          <CustomInput<FormValues>
+            fieldError={errors.lastName}
+            label='Last Name'
+            id='lastName'
+            inputType='text'
+            register={register}
+          />
+          {/* Password */}
+          <CustomInput<FormValues>
+            fieldError={errors.password}
+            label='Password'
+            id='password'
+            inputType='password'
+            register={register}
+          />
+          {/* Confirm Password */}
+          <CustomInput<FormValues>
+            fieldError={errors.passwordConfirmation}
+            label='Confirm Password'
+            id='passwordConfirmation'
+            inputType='password'
+            register={register}
+          />
+          {/* Interests */}
+          <CustomSelect<FormValues, Interests, true>
+            isMulti
+            name='interests'
+            control={control}
+            label='Interests (maximum 2)'
+            placeholder='Select some interests'
+            options={interestOptions}
+            useBasicStyles
+          />
+        </>
+      ),
+      buttonNextFunction: () => {
+        return trigger([
+          'firstName',
+          'lastName',
+          'password',
+          'passwordConfirmation',
+          'interests'
+        ])
+      }
+    },
+    {
+      title: 'Avatar',
+      content: (
+        <>
+          {/* Avatar */}
+          <CustomFileInput<FormValues>
+            fieldError={errors.avatar}
+            label='Avatar'
+            id='avatar'
+            inputType='file'
+            register={register}
+          />
+        </>
+      )
+    }
+  ]
   return (
-    <CustomForm onSubmit={handleSubmit(onSubmit)} isSubmitting={isSubmitting}>
-      {/* First Name */}
-      <CustomInput<FormValues>
-        fieldError={errors.firstName}
-        label='First Name'
-        id='firstName'
-        inputType='text'
-        register={register}
-      />
-
-      {/* Last Name */}
-      <CustomInput<FormValues>
-        fieldError={errors.lastName}
-        label='Last Name'
-        id='lastName'
-        inputType='text'
-        register={register}
-      />
-
-      {/* Password */}
-      <CustomInput<FormValues>
-        fieldError={errors.password}
-        label='Password'
-        id='password'
-        inputType='password'
-        register={register}
-      />
-
-      {/* Confirm Password */}
-      <CustomInput<FormValues>
-        fieldError={errors.passwordConfirmation}
-        label='Confirm Password'
-        id='passwordConfirmation'
-        inputType='password'
-        register={register}
-      />
-
-      {/* Interests */}
-      <CustomSelect<FormValues, Interests, true>
-        isMulti
-        name='interests'
-        control={control}
-        label='Interests (maximum 2)'
-        placeholder='Select some interests'
-        options={interestOptions}
-        useBasicStyles
-      />
-
-      {/* Avatar */}
-      <CustomFileInput<FormValues>
-        fieldError={errors.avatar}
-        label='Avatar'
-        id='avatar'
-        inputType='file'
-        register={register}
-      />
-    </CustomForm>
+    <CustomForm
+      title='React Register Form'
+      onSubmit={handleSubmit(onSubmit)}
+      steps={steps}
+      isSubmitting={isSubmitting}
+    />
   )
 }
 
