@@ -6,6 +6,7 @@ import CustomInput from '../../components/CustomInput'
 import CustomSelect from '../../components/CustomSelect'
 import CustomFileInput from '../../components/CustomFileInput'
 import CustomForm from '../../components/CustomForm'
+import { registerForm } from '../../utils/constants'
 
 const RegisterForm = () => {
   const {
@@ -107,7 +108,7 @@ const RegisterForm = () => {
   ]
   return (
     <CustomForm<FormValues>
-      title='React Register Form'
+      title={registerForm.title}
       onSubmit={handleSubmit(onSubmit)}
       trigger={trigger}
       steps={steps}
