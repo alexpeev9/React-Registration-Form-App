@@ -52,6 +52,7 @@ const RegisterForm = () => {
             id='firstName'
             inputType='text'
             register={register}
+            trigger={trigger}
           />
           {/* Last Name */}
           <CustomInput<FormValues>
@@ -60,6 +61,7 @@ const RegisterForm = () => {
             id='lastName'
             inputType='text'
             register={register}
+            trigger={trigger}
           />
           {/* Password */}
           <CustomInput<FormValues>
@@ -68,6 +70,7 @@ const RegisterForm = () => {
             id='password'
             inputType='password'
             register={register}
+            trigger={trigger}
           />
           {/* Confirm Password */}
           <CustomInput<FormValues>
@@ -76,6 +79,7 @@ const RegisterForm = () => {
             id='passwordConfirmation'
             inputType='password'
             register={register}
+            trigger={trigger}
           />
           {/* Interests */}
           <CustomSelect<FormValues, Interests, true>
@@ -86,6 +90,7 @@ const RegisterForm = () => {
             placeholder='Select some interests'
             options={interestOptions}
             useBasicStyles
+            trigger={trigger}
           />
         </>
       )
