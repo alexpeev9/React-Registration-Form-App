@@ -16,7 +16,7 @@ export const registerSchema = z.object({
     }),
   passwordConfirmation: z
     .string()
-    .min(1, { message: 'You must confirm your password' })
+    .min(6, { message: 'You must confirm your password' })
     .refine((value) => value === password, 'Password do not match'),
   interests: interestsSchema
     .array()
