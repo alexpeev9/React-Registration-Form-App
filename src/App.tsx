@@ -3,11 +3,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import CustomForm from './components/CustomForm'
 import {
   defaultValues,
-  formSchema,
+  registerSchema,
   Interests,
   FormValues,
   interestOptions
-} from './utils/formSchema'
+} from './utils/registerSchema'
 import CustomInput from './components/CustomInput'
 import CustomSelect from './components/CustomSelect'
 import CustomFileInput from './components/CustomFileInput'
@@ -19,7 +19,7 @@ const App = () => {
     register,
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues
   })
 
@@ -36,7 +36,7 @@ const App = () => {
   return (
     <CustomForm onSubmit={handleSubmit(onSubmit)} isSubmitting={isSubmitting}>
       {/* First Name */}
-      <CustomInput
+      <CustomInput<FormValues>
         fieldError={errors.firstName}
         label='First Name'
         id='firstName'
@@ -45,7 +45,7 @@ const App = () => {
       />
 
       {/* Last Name */}
-      <CustomInput
+      <CustomInput<FormValues>
         fieldError={errors.lastName}
         label='Last Name'
         id='lastName'
@@ -54,7 +54,7 @@ const App = () => {
       />
 
       {/* Password */}
-      <CustomInput
+      <CustomInput<FormValues>
         fieldError={errors.password}
         label='Password'
         id='password'
@@ -63,7 +63,7 @@ const App = () => {
       />
 
       {/* Confirm Password */}
-      <CustomInput
+      <CustomInput<FormValues>
         fieldError={errors.passwordConfirmation}
         label='Confirm Password'
         id='passwordConfirmation'
@@ -83,7 +83,7 @@ const App = () => {
       />
 
       {/* Avatar */}
-      <CustomFileInput
+      <CustomFileInput<FormValues>
         fieldError={errors.avatar}
         label='Avatar'
         id='avatar'

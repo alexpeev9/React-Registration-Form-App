@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import { FieldError, UseFormRegister } from 'react-hook-form'
+import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 import {
   Avatar,
   FormControl,
@@ -7,9 +7,8 @@ import {
   FormLabel,
   Input as InputField
 } from '@chakra-ui/react'
-import { FormValues } from '../../utils/formSchema'
 
-const CustomFileInput = ({
+const CustomFileInput = <T extends FieldValues>({
   fieldError,
   label,
   id,
@@ -18,9 +17,9 @@ const CustomFileInput = ({
 }: {
   fieldError: FieldError | undefined
   label: string
-  id: keyof FormValues
+  id: Path<T>
   inputType: string
-  register: UseFormRegister<FormValues>
+  register: UseFormRegister<T>
 }) => {
   const [preview, setPreview] = useState<string | null>(null)
 

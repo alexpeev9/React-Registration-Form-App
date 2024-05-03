@@ -13,7 +13,7 @@ const interestsSchema = z.object({
   value: z.string()
 })
 
-export const formSchema = z
+export const registerSchema = z
   .object({
     firstName: z.string().min(1, { message: 'First name is required' }),
     lastName: z.string().min(1, { message: 'Last name is required' }),
@@ -49,7 +49,7 @@ export const formSchema = z
     }
   )
 
-export type FormValues = z.infer<typeof formSchema>
+export type FormValues = z.infer<typeof registerSchema>
 
 export const defaultValues: FormValues = {
   firstName: '',

@@ -4,10 +4,9 @@ import {
   FormLabel,
   Input as InputField
 } from '@chakra-ui/react'
-import { FieldError, UseFormRegister } from 'react-hook-form'
-import { FormValues } from '../../utils/formSchema'
+import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-const CustomInput = ({
+const CustomInput = <T extends FieldValues>({
   fieldError,
   label,
   id,
@@ -16,20 +15,14 @@ const CustomInput = ({
 }: {
   fieldError: FieldError | undefined
   label: string
-  id: keyof FormValues
+  id: Path<T>
   inputType: string
-  register: UseFormRegister<FormValues>
+  register: UseFormRegister<T>
 }) => {
   return (
     <FormControl id={id} isInvalid={!!fieldError}>
       <FormLabel>{label}</FormLabel>
-      <InputField
-        border={'none'}
-        boxShadow={'none'}
-        placeholder={`${label}`}
-        type={inputType}
-        {...register(id)}
-      />
+      <InputField placeholder={`${label}`} type={inputType} {...register(id)} />
       <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   )
