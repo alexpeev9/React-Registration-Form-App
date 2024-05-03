@@ -1,12 +1,5 @@
 import { z } from 'zod'
-
-export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5mb
-export const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp'
-]
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from './constants'
 
 const interestsSchema = z.object({
   label: z.string(),
