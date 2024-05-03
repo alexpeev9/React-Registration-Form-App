@@ -1,112 +1,114 @@
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Container, Heading, Button, Stack } from '@chakra-ui/react'
-import { zodResolver } from '@hookform/resolvers/zod'
-
-import CustomSelect from '../CustomSelect'
-import CustomInput from '../CustomInput'
 import {
-  FormValues,
-  Interests,
-  defaultValues,
-  formSchema,
-  interestOptions
-} from '../../utils/formSchema'
-import CustomFileInput from '../CustomFileInput'
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Heading,
+  Stack,
+  Step,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  Stepper,
+  StepSeparator,
+  StepStatus,
+  StepTitle,
+  useSteps
+} from '@chakra-ui/react'
+import { FormEventHandler } from 'react'
 
-const CustomForm = () => {
-  const {
-    control,
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting }
-  } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues
+const CustomForm = ({
+  onSubmit,
+  title,
+  isSubmitting,
+  steps
+}: {
+  title: string
+  onSubmit: FormEventHandler<HTMLDivElement>
+  isSubmitting: boolean
+  steps: {
+    title: string
+    content: JSX.Element
+    buttonNextFunction?: () => Promise<boolean>
+  }[]
+}) => {
+  const { activeStep, goToPrevious, goToNext } = useSteps({
+    count: steps.length
   })
-  const onSubmit: SubmitHandler<FormValues> = (values) => {
-    console.log(values)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert('Great Success!')
-        resolve(values)
-      }, 3000)
-    })
+  const currentStep = steps[activeStep]
+  const goToNextStep = async () => {
+    const isValid =
+      currentStep.buttonNextFunction && (await currentStep.buttonNextFunction())
+    if (!isValid) {
+      return
+    }
+    goToNext()
   }
 
   return (
-    <Container mt={8} mb={20} as='form' onSubmit={handleSubmit(onSubmit)}>
-      {/* Title */}
+    <Container mt={8} mb={20} as='form' onSubmit={onSubmit}>
       <Heading as='h1' mb={8} size='lg'>
-        React Register Form
+        {title}
       </Heading>
-
       <Stack spacing={6}>
-        {/* First Name */}
-        <CustomInput
-          fieldError={errors.firstName}
-          label='First Name'
-          id='firstName'
-          inputType='text'
-          register={register('firstName')}
-        />
+        <Stepper index={activeStep}>
+          {steps.map((step, index) => (
+            <Step key={index}>
+              <StepIndicator>
+                <StepStatus
+                  complete={<StepIcon />}
+                  incomplete={<StepNumber />}
+                  active={<StepNumber />}
+                />
+              </StepIndicator>
 
-        {/* Last Name */}
-        <CustomInput
-          fieldError={errors.lastName}
-          label='Last Name'
-          id='lastName'
-          inputType='text'
-          register={register('lastName')}
-        />
-
-        {/* Password */}
-        <CustomInput
-          fieldError={errors.password}
-          label='Password'
-          id='password'
-          inputType='password'
-          register={register('password')}
-        />
-
-        {/* Confirm Password */}
-        <CustomInput
-          fieldError={errors.passwordConfirmation}
-          label='Confirm Password'
-          id='passwordConfirmation'
-          inputType='password'
-          register={register('passwordConfirmation')}
-        />
-
-        {/* Interests */}
-        <CustomSelect<FormValues, Interests, true>
-          isMulti
-          name='interests'
-          control={control}
-          label='Interests (maximum 2)'
-          placeholder='Select some interests'
-          options={interestOptions}
-          useBasicStyles
-        />
-
-        {/* Avatar */}
-        <CustomFileInput
-          fieldError={errors.avatar}
-          label='Avatar'
-          id='avatar'
-          inputType='file'
-          register={register('avatar')}
-        />
-
-        {/* Submit Button */}
-        <Button
-          type='submit'
-          isLoading={isSubmitting}
-          colorScheme='blue'
-          w='50%'
-          alignSelf={'center'}
-        >
-          Submit
-        </Button>
+              <Box flexShrink='0'>
+                <StepTitle>{step.title}</StepTitle>
+              </Box>
+              <StepSeparator />
+            </Step>
+          ))}
+        </Stepper>
+        {steps[activeStep].content}
+        {/* Previous and Submit Button */}
+        <ButtonGroup>
+          {/* Show Previous button only if there is a previous step */}
+          {activeStep !== 0 && (
+            <Button
+              type='button'
+              colorScheme='blue'
+              onClick={() => goToPrevious()}
+              w='50%'
+              alignSelf={'center'}
+            >
+              Previous
+            </Button>
+          )}
+          {/* Show Next button only if there is a next step */}
+          {activeStep !== steps.length - 1 && (
+            <Button
+              type='button'
+              colorScheme='blue'
+              onClick={goToNextStep}
+              w='50%'
+              alignSelf={'center'}
+            >
+              Next
+            </Button>
+          )}
+          {/* Submit button only on final step */}
+          {activeStep === steps.length - 1 && (
+            <Button
+              type='submit'
+              isLoading={isSubmitting}
+              colorScheme='blue'
+              w='50%'
+              alignSelf={'center'}
+            >
+              Submit
+            </Button>
+          )}
+        </ButtonGroup>
       </Stack>
     </Container>
   )

@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import { FieldError, UseFormRegisterReturn } from 'react-hook-form'
+import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 import {
   Avatar,
   FormControl,
@@ -8,7 +8,7 @@ import {
   Input as InputField
 } from '@chakra-ui/react'
 
-const CustomFileInput = ({
+const CustomFileInput = <T extends FieldValues>({
   fieldError,
   label,
   id,
@@ -17,14 +17,14 @@ const CustomFileInput = ({
 }: {
   fieldError: FieldError | undefined
   label: string
-  id: string
+  id: Path<T>
   inputType: string
-  register: UseFormRegisterReturn<string>
+  register: UseFormRegister<T>
 }) => {
   const [preview, setPreview] = useState<string | null>(null)
 
   const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
-    register.onChange(event)
+    register(id).onChange(event)
     if (!event.target.files || !event.target.files.length) {
       return
     }
@@ -33,6 +33,7 @@ const CustomFileInput = ({
     setPreview(urlImage)
   }
 
+  const customRegister = { ...register(id), onChange: handleUploadedFile }
   return (
     <FormControl
       display={'flex'}
@@ -44,8 +45,7 @@ const CustomFileInput = ({
       <InputField
         placeholder={`${label}`}
         type={inputType}
-        {...register}
-        onChange={handleUploadedFile}
+        {...customRegister}
       />
       <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
       {preview && (
