@@ -6,3 +6,7 @@ export const ACCEPTED_IMAGE_TYPES = [
   'image/png',
   'image/webp'
 ]
+
+export const registerForm = {
+  title: 'React Register Form'
+}
