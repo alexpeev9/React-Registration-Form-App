@@ -1,12 +1,8 @@
 import { z } from 'zod'
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from './constants'
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '../../utils/constants'
+import { interestsSchema } from './interestsSchema'
 
 let password = ''
-
-const interestsSchema = z.object({
-  label: z.string(),
-  value: z.string()
-})
 
 export const registerSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required' }),
@@ -51,12 +47,3 @@ export const defaultValues: FormValues = {
   passwordConfirmation: '',
   interests: []
 }
-
-export type Interests = z.infer<typeof interestsSchema>
-
-export const interestOptions: Interests[] = [
-  { label: 'Sports', value: 'sports' },
-  { label: 'Music', value: 'music' },
-  { label: 'Dancing', value: 'dancing' },
-  { label: 'Games', value: 'games' }
-]

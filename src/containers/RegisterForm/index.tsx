@@ -1,11 +1,6 @@
 import { Path, SubmitHandler, useForm } from 'react-hook-form'
-import {
-  FormValues,
-  defaultValues,
-  interestOptions,
-  Interests,
-  registerSchema
-} from '../../utils/registerSchema'
+import { registerSchema, FormValues, defaultValues } from './registerSchema'
+import { interestOptions, Interests } from './interestsSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CustomInput from '../../components/CustomInput'
 import CustomSelect from '../../components/CustomSelect'
