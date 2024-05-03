@@ -1,29 +1,26 @@
-import { useController, FieldValues, UseControllerProps } from 'react-hook-form'
+import {
+  Control,
+  FieldValues,
+  Path,
+  useController,
+  UseFormTrigger
+} from 'react-hook-form'
 import { FormErrorMessage, FormLabel, FormControl } from '@chakra-ui/react'
-import { Select, Props as SelectProps, GroupBase } from 'chakra-react-select'
+import { GroupBase, OptionsOrGroups, Select } from 'chakra-react-select'
 
-interface CustomSelectProps<
-  FormValues extends FieldValues = FieldValues,
-  Option = unknown,
-  IsMulti extends boolean = boolean,
-  Group extends GroupBase<Option> = GroupBase<Option>
-> extends Omit<SelectProps<Option, IsMulti, Group>, 'name' | 'defaultValue'>,
-    UseControllerProps<FormValues> {
-  label?: string
-}
-
-const CustomSelect = <
-  FormValues extends FieldValues = FieldValues,
-  Option = unknown,
-  IsMulti extends boolean = boolean,
-  Group extends GroupBase<Option> = GroupBase<Option>
->({
+const CustomSelect = <T extends FieldValues, Option>({
   name,
   label,
-  options,
   control,
-  ...selectProps
-}: CustomSelectProps<FormValues, Option, IsMulti, Group>) => {
+  options,
+  trigger
+}: {
+  name: Path<T>
+  label: string
+  control: Control<T>
+  options: OptionsOrGroups<Option, GroupBase<Option>>
+  trigger: UseFormTrigger<T>
+}) => {
   const {
     field,
     fieldState: { error }
@@ -31,11 +28,21 @@ const CustomSelect = <
     name,
     control
   })
+  const validateSelect = async () => {
+    field.onBlur()
+    trigger([name])
+  }
 
+  const customField = { ...field, onBlur: validateSelect }
   return (
     <FormControl id={name} isInvalid={!!error}>
-      {label && <FormLabel>{label}</FormLabel>}
-      <Select options={options} {...selectProps} {...field} />
+      <FormLabel>{label}</FormLabel>
+      <Select
+        isMulti={true}
+        placeholder={label}
+        options={options}
+        {...customField}
+      />
       <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
   )

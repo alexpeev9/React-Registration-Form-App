@@ -4,26 +4,47 @@ import {
   FormLabel,
   Input as InputField
 } from '@chakra-ui/react'
-import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form'
+import {
+  Control,
+  FieldValues,
+  Path,
+  useController,
+  UseFormTrigger
+} from 'react-hook-form'
 
 const CustomInput = <T extends FieldValues>({
-  fieldError,
   label,
-  id,
+  name,
   inputType,
-  register
+  control,
+  trigger
 }: {
-  fieldError: FieldError | undefined
   label: string
-  id: Path<T>
+  name: Path<T>
   inputType: string
-  register: UseFormRegister<T>
+  control: Control<T>
+  trigger: UseFormTrigger<T>
 }) => {
+  const {
+    field,
+    fieldState: { error }
+  } = useController({
+    name,
+    control
+  })
+
+  const validateText = async () => {
+    field.onBlur()
+    trigger([name])
+  }
+
+  const customField = { ...field, onBlur: validateText }
+
   return (
-    <FormControl id={id} isInvalid={!!fieldError}>
+    <FormControl id={name} isInvalid={!!error}>
       <FormLabel>{label}</FormLabel>
-      <InputField placeholder={`${label}`} type={inputType} {...register(id)} />
-      <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
+      <InputField placeholder={label} type={inputType} {...customField} />
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
   )
 }
