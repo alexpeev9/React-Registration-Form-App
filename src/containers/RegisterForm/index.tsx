@@ -1,7 +1,7 @@
 import { Path, SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, FormValues, defaultValues } from './registerSchema'
 import { interestOptions, Interests } from './interestsSchema'
-import { zodResolver } from '@hookform/resolvers/zod'
 import CustomInput from '../../components/CustomInput'
 import CustomSelect from '../../components/CustomSelect'
 import CustomFileInput from '../../components/CustomFileInput'
@@ -47,49 +47,42 @@ const RegisterForm = () => {
         <>
           {/* First Name */}
           <CustomInput<FormValues>
-            fieldError={errors.firstName}
             label='First Name'
-            id='firstName'
+            name='firstName'
             inputType='text'
-            register={register}
+            control={control}
             trigger={trigger}
           />
           {/* Last Name */}
           <CustomInput<FormValues>
-            fieldError={errors.lastName}
             label='Last Name'
-            id='lastName'
+            name='lastName'
             inputType='text'
-            register={register}
+            control={control}
             trigger={trigger}
           />
           {/* Password */}
           <CustomInput<FormValues>
-            fieldError={errors.password}
             label='Password'
-            id='password'
+            name='password'
             inputType='password'
-            register={register}
+            control={control}
             trigger={trigger}
           />
           {/* Confirm Password */}
           <CustomInput<FormValues>
-            fieldError={errors.passwordConfirmation}
             label='Confirm Password'
-            id='passwordConfirmation'
+            name='passwordConfirmation'
             inputType='password'
-            register={register}
+            control={control}
             trigger={trigger}
           />
           {/* Interests */}
-          <CustomSelect<FormValues, Interests, true>
-            isMulti
+          <CustomSelect<FormValues, Interests>
             name='interests'
             control={control}
             label='Interests (maximum 2)'
-            placeholder='Select some interests'
             options={interestOptions}
-            useBasicStyles
             trigger={trigger}
           />
         </>
@@ -102,10 +95,10 @@ const RegisterForm = () => {
         <>
           {/* Avatar */}
           <CustomFileInput<FormValues>
-            fieldError={errors.avatar}
             label='Avatar'
-            id='avatar'
+            name='avatar'
             inputType='file'
+            fieldError={errors.avatar}
             register={register}
           />
         </>

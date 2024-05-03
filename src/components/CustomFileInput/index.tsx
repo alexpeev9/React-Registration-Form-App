@@ -11,20 +11,20 @@ import {
 const CustomFileInput = <T extends FieldValues>({
   fieldError,
   label,
-  id,
+  name,
   inputType,
   register
 }: {
   fieldError: FieldError | undefined
   label: string
-  id: Path<T>
+  name: Path<T>
   inputType: string
   register: UseFormRegister<T>
 }) => {
   const [preview, setPreview] = useState<string | null>(null)
 
   const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
-    register(id).onChange(event)
+    register(name).onChange(event)
     if (!event.target.files || !event.target.files.length) {
       return
     }
@@ -33,12 +33,12 @@ const CustomFileInput = <T extends FieldValues>({
     setPreview(urlImage)
   }
 
-  const customRegister = { ...register(id), onChange: handleUploadedFile }
+  const customRegister = { ...register(name), onChange: handleUploadedFile }
   return (
     <FormControl
       display={'flex'}
       flexDirection={'column'}
-      id={id}
+      id={name}
       isInvalid={!!fieldError}
     >
       <FormLabel>{label}</FormLabel>
