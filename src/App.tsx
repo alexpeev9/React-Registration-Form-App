@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Path, SubmitHandler, useForm } from 'react-hook-form'
 import CustomForm from './components/CustomForm'
 import {
   defaultValues,
@@ -34,9 +34,20 @@ const App = () => {
     })
   }
 
-  const steps = [
+  const steps: {
+    title: string
+    inputs: Path<FormValues>[]
+    content: JSX.Element
+  }[] = [
     {
       title: 'Information',
+      inputs: [
+        'firstName',
+        'lastName',
+        'password',
+        'passwordConfirmation',
+        'interests'
+      ],
       content: (
         <>
           {/* First Name */}
@@ -82,19 +93,11 @@ const App = () => {
             useBasicStyles
           />
         </>
-      ),
-      buttonNextFunction: () => {
-        return trigger([
-          'firstName',
-          'lastName',
-          'password',
-          'passwordConfirmation',
-          'interests'
-        ])
-      }
+      )
     },
     {
       title: 'Avatar',
+      inputs: ['avatar'],
       content: (
         <>
           {/* Avatar */}
@@ -110,9 +113,10 @@ const App = () => {
     }
   ]
   return (
-    <CustomForm
+    <CustomForm<FormValues>
       title='React Register Form'
       onSubmit={handleSubmit(onSubmit)}
+      trigger={trigger}
       steps={steps}
       isSubmitting={isSubmitting}
     />

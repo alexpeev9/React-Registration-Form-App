@@ -16,20 +16,23 @@ import {
   useSteps
 } from '@chakra-ui/react'
 import { FormEventHandler } from 'react'
+import { FieldValues, Path, UseFormTrigger } from 'react-hook-form'
 
-const CustomForm = ({
+const CustomForm = <T extends FieldValues>({
   onSubmit,
   title,
   isSubmitting,
-  steps
+  steps,
+  trigger
 }: {
   title: string
   onSubmit: FormEventHandler<HTMLDivElement>
+  trigger: UseFormTrigger<T>
   isSubmitting: boolean
   steps: {
     title: string
     content: JSX.Element
-    buttonNextFunction?: () => Promise<boolean>
+    inputs: Path<T>[]
   }[]
 }) => {
   const { activeStep, goToPrevious, goToNext } = useSteps({
@@ -37,8 +40,7 @@ const CustomForm = ({
   })
   const currentStep = steps[activeStep]
   const goToNextStep = async () => {
-    const isValid =
-      currentStep.buttonNextFunction && (await currentStep.buttonNextFunction())
+    const isValid = await trigger(currentStep.inputs)
     if (!isValid) {
       return
     }
@@ -69,7 +71,7 @@ const CustomForm = ({
             </Step>
           ))}
         </Stepper>
-        {steps[activeStep].content}
+        {currentStep.content}
         {/* Previous and Submit Button */}
         <ButtonGroup>
           {/* Show Previous button only if there is a previous step */}
