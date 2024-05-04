@@ -1,5 +1,10 @@
-import { ChangeEvent, useState } from 'react'
-import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form'
+import { ChangeEvent, ReactNode, useState } from 'react'
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister
+} from 'react-hook-form'
 import {
   Avatar,
   FormControl,
@@ -12,13 +17,11 @@ const CustomFileInput = <T extends FieldValues>({
   fieldError,
   label,
   name,
-  inputType,
   register
 }: {
-  fieldError: FieldError | undefined
+  fieldError: FieldErrors<T>[Path<T>] | undefined
   label: string
   name: Path<T>
-  inputType: string
   register: UseFormRegister<T>
 }) => {
   const [preview, setPreview] = useState<string | null>(null)
@@ -42,12 +45,8 @@ const CustomFileInput = <T extends FieldValues>({
       isInvalid={!!fieldError}
     >
       <FormLabel>{label}</FormLabel>
-      <InputField
-        placeholder={`${label}`}
-        type={inputType}
-        {...customRegister}
-      />
-      <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
+      <InputField placeholder={`${label}`} type='file' {...customRegister} />
+      <FormErrorMessage>{fieldError?.message as ReactNode}</FormErrorMessage>
       {preview && (
         <Avatar
           alignSelf={'center'}
