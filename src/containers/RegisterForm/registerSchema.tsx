@@ -37,9 +37,11 @@ export const registerSchema = z.object({
     })
 })
 
-export type FormValues = z.infer<typeof registerSchema>
+export type RegisterValues = z.infer<typeof registerSchema>
 
-export const defaultValues: FormValues = {
+export type RegisterSchemaType = typeof registerSchema
+
+export const defaultValues: RegisterValues = {
   firstName: '',
   lastName: '',
   password: '',
