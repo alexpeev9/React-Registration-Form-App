@@ -9,4 +9,5 @@ export const ACCEPTED_IMAGE_TYPES = [
 
 export const registerForm = {
   title: 'React Register Form'
+  // TODO: Add all strings for cypress testing
 }

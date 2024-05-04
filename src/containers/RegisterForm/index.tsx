@@ -1,4 +1,5 @@
-import { Path, SubmitHandler } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form'
+
 import {
   registerSchema,
   RegisterValues,
@@ -8,32 +9,12 @@ import {
 import { registerForm } from '../../utils/constants'
 import CustomForm from '../../components/CustomForm'
 import { interestOptions, Interests } from './interestsSchema'
-import { GroupBase, OptionsOrGroups } from 'chakra-react-select'
+import { FormData } from '../../components/CustomForm/types'
 
 const RegisterForm = () => {
-  const onSubmit: SubmitHandler<RegisterValues> = (values) => {
-    console.log(values)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert('Great Success!')
-        resolve(values)
-      }, 3000)
-    })
-  }
-
-  const formData: {
-    title: string
-    steps: {
-      title: string
-      content: {
-        name: Path<RegisterValues>
-        label: string
-        inputType: string
-        options?: OptionsOrGroups<Interests, GroupBase<Interests>>
-      }[]
-    }[]
-  } = {
-    title: 'Register',
+  // Define form data structure
+  const formData: FormData<RegisterValues, Interests> = {
+    title: registerForm.title,
     steps: [
       {
         title: 'Information',
@@ -60,12 +41,31 @@ const RegisterForm = () => {
       }
     ]
   }
+
+  // Function to handle form submission
+  const onSubmit: SubmitHandler<RegisterValues> = (values) => {
+    console.log(values)
+    return new Promise((resolve) => {
+      // Simulate asynchronous submission
+      setTimeout(() => {
+        alert('Great Success!') // Display success message
+        resolve(values) // Resolve promise with form values
+      }, 3000)
+    })
+  }
+
+  // Render custom form component with register form data
   return (
     <CustomForm<RegisterValues, RegisterSchemaType, Interests>
+      // Pass title
       title={registerForm.title}
+      // Pass submit handler
       onSubmit={onSubmit}
+      // Pass form data
       formData={formData}
+      // Pass form schema for validation
       schema={registerSchema}
+      // Pass default values for form fields
       defaultValues={defaultValues}
     />
   )

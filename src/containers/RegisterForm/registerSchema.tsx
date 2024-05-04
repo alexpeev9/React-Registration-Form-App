@@ -2,8 +2,10 @@ import { z } from 'zod'
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '../../utils/constants'
 import { interestsSchema } from './interestsSchema'
 
+// Variable to store password temporarily
 let password = ''
 
+// Define schema for registration form validation
 export const registerSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required' }),
   lastName: z.string().min(1, { message: 'Last name is required' }),
@@ -41,6 +43,7 @@ export type RegisterValues = z.infer<typeof registerSchema>
 
 export type RegisterSchemaType = typeof registerSchema
 
+// Define default values for registration form fields
 export const defaultValues: RegisterValues = {
   firstName: '',
   lastName: '',

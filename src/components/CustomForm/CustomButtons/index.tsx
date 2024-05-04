@@ -1,4 +1,5 @@
 import { Button, ButtonGroup } from '@chakra-ui/react'
+import { CustomButtonsParams } from './types'
 
 const CustomButtons = ({
   activeStep,
@@ -6,13 +7,7 @@ const CustomButtons = ({
   stepsLength,
   nextStep,
   previousStep
-}: {
-  activeStep: number
-  isSubmitting: boolean
-  stepsLength: number
-  nextStep: () => Promise<void>
-  previousStep: () => void
-}) => {
+}: CustomButtonsParams) => {
   return (
     <ButtonGroup>
       {/* Show Previous button only if there is a previous step */}

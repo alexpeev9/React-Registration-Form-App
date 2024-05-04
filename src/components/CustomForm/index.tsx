@@ -1,18 +1,12 @@
-import {
-  DefaultValues,
-  FieldValues,
-  Path,
-  SubmitHandler,
-  useForm
-} from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { Container, Heading, Stack, useSteps } from '@chakra-ui/react'
+import { ZodType } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import CustomStepper from './CustomStepper'
 import CustomButtons from './CustomButtons'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { ZodType } from 'zod'
-import { GroupBase, OptionsOrGroups } from 'chakra-react-select'
 import CustomFields from './CustomFields'
+import { FormTypes } from './types'
 
 const CustomForm = <T extends FieldValues, SchemaType extends ZodType, Option>({
   onSubmit,
@@ -20,43 +14,37 @@ const CustomForm = <T extends FieldValues, SchemaType extends ZodType, Option>({
   formData,
   schema,
   defaultValues
-}: {
-  title: string
-  onSubmit: SubmitHandler<T>
-  formData: {
-    title: string
-    steps: {
-      title: string
-      content: {
-        name: Path<T>
-        label: string
-        inputType: string
-        options?: OptionsOrGroups<Option, GroupBase<Option>>
-      }[]
-    }[]
-  }
-  schema: SchemaType
-  defaultValues: DefaultValues<T>
-}) => {
+}: FormTypes<T, SchemaType, Option>) => {
+  // Custom hook to manage steps in the form
   const { activeStep, goToPrevious, goToNext } = useSteps({
     count: formData.steps.length
   })
 
+  // Get current step from form data
   const currentStep = formData.steps[activeStep]
 
+  // Function to navigate to the next step
   const goToNextStep = async () => {
+    // Extract names of fields in the current step
     const names = currentStep.content.map((obj) => obj.name)
+
+    // Trigger validation for fields in the current step
     const isValid = await trigger(names)
+
     if (!isValid) {
       return
     }
+
+    // If validation passes, proceed to the next step
     goToNext()
   }
 
+  // Function to navigate to the previous step
   const goToPreviousStep = () => {
     goToPrevious()
   }
 
+  // Form control functions and state management
   const {
     control,
     handleSubmit,

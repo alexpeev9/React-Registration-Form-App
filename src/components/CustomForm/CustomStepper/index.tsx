@@ -9,16 +9,9 @@ import {
   StepStatus,
   StepTitle
 } from '@chakra-ui/react'
+import { CustomStepperParams } from './types'
 
-const CustomStepper = ({
-  activeStep,
-  steps
-}: {
-  activeStep: number
-  steps: {
-    title: string
-  }[]
-}) => {
+const CustomStepper = ({ activeStep, steps }: CustomStepperParams) => {
   return (
     <Stepper index={activeStep}>
       {steps.map((step, index) => (
