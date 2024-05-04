@@ -9,7 +9,7 @@ const CustomButtons = ({
   previousStep
 }: CustomButtonsParams) => {
   return (
-    <ButtonGroup>
+    <ButtonGroup display={'flex'} justifyContent={'center'}>
       {/* Show Previous button only if there is a previous step */}
       {activeStep !== 0 && (
         <Button
