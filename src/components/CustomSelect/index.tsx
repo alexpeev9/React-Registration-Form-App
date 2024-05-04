@@ -1,12 +1,7 @@
-import {
-  Control,
-  FieldValues,
-  Path,
-  useController,
-  UseFormTrigger
-} from 'react-hook-form'
+import { FieldValues, useController } from 'react-hook-form'
 import { FormErrorMessage, FormLabel, FormControl } from '@chakra-ui/react'
-import { GroupBase, OptionsOrGroups, Select } from 'chakra-react-select'
+import { Select } from 'chakra-react-select'
+import { CustomSelectParams } from './types'
 
 const CustomSelect = <T extends FieldValues, Option>({
   name,
@@ -14,13 +9,8 @@ const CustomSelect = <T extends FieldValues, Option>({
   control,
   options,
   trigger
-}: {
-  name: Path<T>
-  label: string
-  control: Control<T>
-  options: OptionsOrGroups<Option, GroupBase<Option>>
-  trigger: UseFormTrigger<T>
-}) => {
+}: CustomSelectParams<T, Option>) => {
+  // Get field values and error status
   const {
     field,
     fieldState: { error }
@@ -28,11 +18,14 @@ const CustomSelect = <T extends FieldValues, Option>({
     name,
     control
   })
+
+  // Function to validate input and trigger form validation
   const validateSelect = async () => {
     field.onBlur()
     trigger([name])
   }
 
+  // Customize field object to include custom event handler
   const customField = { ...field, onBlur: validateSelect }
   return (
     <FormControl id={name} isInvalid={!!error}>

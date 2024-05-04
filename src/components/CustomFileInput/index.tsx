@@ -1,10 +1,5 @@
 import { ChangeEvent, ReactNode, useState } from 'react'
-import {
-  FieldErrors,
-  FieldValues,
-  Path,
-  UseFormRegister
-} from 'react-hook-form'
+import { FieldValues } from 'react-hook-form'
 import {
   Avatar,
   FormControl,
@@ -12,30 +7,36 @@ import {
   FormLabel,
   Input as InputField
 } from '@chakra-ui/react'
+import { CustomFileInputParams } from './types'
 
 const CustomFileInput = <T extends FieldValues>({
   fieldError,
   label,
   name,
   register
-}: {
-  fieldError: FieldErrors<T>[Path<T>] | undefined
-  label: string
-  name: Path<T>
-  register: UseFormRegister<T>
-}) => {
+}: CustomFileInputParams<T>) => {
+  // State to store preview image URL
   const [preview, setPreview] = useState<string | null>(null)
 
+  // Function to handle uploaded file
   const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
+    // Call onChange event handler
     register(name).onChange(event)
+
+    // If no file selected, return
     if (!event.target.files || !event.target.files.length) {
       return
     }
+
+    // Get the uploaded file
     const file = event.target.files[0]
+
+    // Create URL for the file and set it as preview
     const urlImage = URL.createObjectURL(file)
     setPreview(urlImage)
   }
 
+  // Customize register object to include custom event handler
   const customRegister = { ...register(name), onChange: handleUploadedFile }
   return (
     <FormControl

@@ -4,13 +4,9 @@ import {
   FormLabel,
   Input as InputField
 } from '@chakra-ui/react'
-import {
-  Control,
-  FieldValues,
-  Path,
-  useController,
-  UseFormTrigger
-} from 'react-hook-form'
+import { FieldValues, useController } from 'react-hook-form'
+
+import { CustomInputParams } from './types'
 
 const CustomInput = <T extends FieldValues>({
   label,
@@ -18,13 +14,8 @@ const CustomInput = <T extends FieldValues>({
   inputType,
   control,
   trigger
-}: {
-  label: string
-  name: Path<T>
-  inputType: string
-  control: Control<T>
-  trigger: UseFormTrigger<T>
-}) => {
+}: CustomInputParams<T>) => {
+  // Get field values and error status
   const {
     field,
     fieldState: { error }
@@ -33,11 +24,13 @@ const CustomInput = <T extends FieldValues>({
     control
   })
 
+  // Function to validate input and trigger form validation
   const validateText = async () => {
     field.onBlur()
     trigger([name])
   }
 
+  // Customize field object to include custom event handler
   const customField = { ...field, onBlur: validateText }
 
   return (

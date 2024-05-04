@@ -1,16 +1,9 @@
-import { GroupBase, OptionsOrGroups } from 'chakra-react-select'
 import { Fragment } from 'react'
-import {
-  Control,
-  FieldErrors,
-  FieldValues,
-  Path,
-  UseFormRegister,
-  UseFormTrigger
-} from 'react-hook-form'
-import CustomInput from '../CustomInput'
-import CustomSelect from '../CustomSelect'
-import CustomFileInput from '../CustomFileInput'
+import { FieldValues } from 'react-hook-form'
+import CustomInput from '../../CustomInput'
+import CustomSelect from '../../CustomSelect'
+import CustomFileInput from '../../CustomFileInput'
+import { CustomFieldsParams } from './types'
 
 const CustomFields = <T extends FieldValues, Option>({
   current,
@@ -18,21 +11,7 @@ const CustomFields = <T extends FieldValues, Option>({
   errors,
   trigger,
   register
-}: {
-  current: {
-    title: string
-    content: {
-      name: Path<T>
-      label: string
-      inputType: string
-      options?: OptionsOrGroups<Option, GroupBase<Option>>
-    }[]
-  }
-  control: Control<T>
-  errors: FieldErrors<T>
-  trigger: UseFormTrigger<T>
-  register: UseFormRegister<T>
-}) => {
+}: CustomFieldsParams<T, Option>) => {
   return current.content.map((index, key) => (
     <Fragment key={key}>
       {(index.inputType === 'text' || index.inputType === 'password') && (
