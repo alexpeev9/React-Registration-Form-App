@@ -26,6 +26,7 @@ In the provided example, a registration form is created with two steps:
 - React Hook Form (for managing form state)
 - Zod (for form validation)
 - Cypress (for end-to-end testing)
+- Vite (for build tooling and development server)
 - Vercel (for site deployment)
 
 ## How to Run the Project
@@ -63,7 +64,3 @@ Open your browser and navigate to `http://localhost:5173` to view the applicatio
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
